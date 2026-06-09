@@ -1,0 +1,275 @@
+package com.rsscripting.rsauger.listeners;
+
+import com.rsscripting.rsauger.config.ConfigManager;
+import com.rsscripting.rsauger.managers.MachineManager;
+import com.rsscripting.rsauger.gui.*;
+import com.rsscripting.rsauger.utils.RSConstants;
+import com.rsscripting.rsauger.utils.RSKeys;
+import com.rsscripting.rsauger.utils.RSMessageUtils;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+
+public class RSMenuListener
+        implements Listener {
+
+    private final RSConvertListener
+            conversionListener;
+
+    public RSMenuListener(
+            RSConvertListener conversionListener
+    ) {
+
+        this.conversionListener =
+                conversionListener;
+
+    }
+
+    @EventHandler
+    public void onInventoryClick(
+            InventoryClickEvent event
+    ) {
+
+        Player player =
+                (Player) event.getWhoClicked();
+
+        /*
+        |--------------------------------------------------------------------------
+        | CONVERSION MENU
+        |--------------------------------------------------------------------------
+        */
+
+        if (event.getInventory()
+                .getHolder()
+                instanceof RSMenuHolder holder
+                && holder.getMenuId()
+                .equals(
+                        "CONVERT"
+                )) {
+
+            event.setCancelled(true);
+
+            if (event.getCurrentItem() == null) {
+                return;
+            }
+
+            if (event.getRawSlot() == 4) {
+
+                Block block =
+                        conversionListener.getSelectedBlock(player);
+
+                if (block == null){
+
+                    player.closeInventory();
+
+                    return;
+
+                }
+
+                MachineManager.insertMachine(
+                        block
+                );
+
+                MachineManager.setOwner(
+                        block,
+                        player
+                );
+
+                MachineManager.setPaused(
+                        block,
+                        false
+                );
+
+                MachineManager.setRadius(
+                        block,
+
+                        (int) ConfigManager.get().getDouble(
+                                "default-radius"
+                        )
+                );
+
+                MachineManager.setFilterMode(
+                        block,
+                        RSKeys.FILTER_ALLOW_ALL
+                );
+
+/*
+|--------------------------------------------------------------------------
+| ENTITY DISPLAY NAME
+|--------------------------------------------------------------------------
+|
+| Intentionally disabled.
+|
+| Some future entity-based plugins (villager systems, escorts,
+| traders, guards, etc.) may want visible custom names.
+|
+*/
+
+/*
+                entity.customName(
+                        net.kyori.adventure.text.Component.text(
+                                RSConstants.ENTITY_DISPLAY_NAME
+                        )
+                );
+
+                entity.setCustomNameVisible(true);
+*/
+
+
+
+                RSMessageUtils.success(
+                        player,
+                        "Converted Successfully."
+                );
+
+                RSMainMenu.open(
+                        player,
+                        block
+                );
+
+            }
+
+            return;
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | MAIN MENU
+        |--------------------------------------------------------------------------
+        */
+
+        if (event.getInventory()
+                .getHolder()
+                instanceof RSMenuHolder holder
+                && holder.getMenuId()
+                .equals(
+                        "MAIN"
+                )) {
+
+            event.setCancelled(true);
+
+            if (event.getCurrentItem() == null) {
+                return;
+            }
+
+            Block block =
+                    conversionListener.getSelectedBlock(player);
+
+            if (block == null) {
+
+                player.closeInventory();
+
+                return;
+
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | CONVERT BACK
+            |--------------------------------------------------------------------------
+            */
+
+            if (event.getRawSlot() == 2) {
+
+                conversionListener.convertBack(
+                        player
+                );
+
+                return;
+
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | PAUSE / RESUME
+            |--------------------------------------------------------------------------
+            */
+
+            if (event.getRawSlot() == 6) {
+
+                boolean paused =
+                        MachineManager.isPaused(
+                                block
+                        );
+
+                MachineManager.setPaused(
+                        block,
+                        !paused
+                );
+
+                RSMainMenu.open(
+                        player,
+                        block
+                );
+
+                return;
+
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | RADIUS MENU
+            |--------------------------------------------------------------------------
+            */
+
+            if (event.getRawSlot() == 11) {
+
+                RSRadiusMenu.open(
+                        player,
+                        block
+                );
+
+                return;
+
+            }
+
+/*
+|--------------------------------------------------------------------------
+| FILTER
+|--------------------------------------------------------------------------
+*/
+
+            if (event.getRawSlot() == 15) {
+
+                RSFilterMenu.open(
+                        player,
+                        block
+                );
+
+                return;
+
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | ADMIN MENU
+            |--------------------------------------------------------------------------
+            */
+
+            if (event.getRawSlot() == 4) {
+
+                if (!player.isOp()
+                        ||
+
+                        !player.hasPermission(
+                                RSConstants.ADMIN_PERMISSION
+                        )) {
+
+                    return;
+
+                }
+
+                RSAdminMenu.open(
+                        player
+                );
+
+            }
+
+        }
+
+    }
+
+}
