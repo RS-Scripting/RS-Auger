@@ -19,7 +19,7 @@ public class RSMessageUtils {
 
                     .append(
                             Component.text(
-                                    "RS-Plugin"
+                                    "RS-Auger"
                             ).color(
                                     NamedTextColor.RED
                             )

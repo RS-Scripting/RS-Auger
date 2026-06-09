@@ -6,8 +6,4 @@
 
 debug-mode: false
 
-default-radius: 5
-
-max-radius: 0
-
 admin-bypass: true

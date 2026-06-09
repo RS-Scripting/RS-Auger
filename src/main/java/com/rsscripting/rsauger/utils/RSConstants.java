@@ -26,10 +26,10 @@ public class RSConstants {
     */
 
     public static final String GITHUB_USER =
-            "YourGitHubUsername";
+            "RS-Scripting";
 
     public static final String GITHUB_REPOSITORY =
-            "RS-ItemMagnet";
+            "RS-Auger";
 
     /*
     |--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ public class RSConstants {
 
     public static final Material
             REQUIRED_TARGET_BLOCK =
-            Material.LODESTONE;
+            Material.LIGHTNING_ROD;
 
     /*
     |--------------------------------------------------------------------------

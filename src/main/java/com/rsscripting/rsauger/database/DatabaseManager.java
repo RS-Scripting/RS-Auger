@@ -102,7 +102,6 @@ public class DatabaseManager {
                         owner_uuid TEXT,
                         owner_name TEXT,
                         machine_type TEXT,
-                        radius INTEGER DEFAULT 5,
                         paused INTEGER DEFAULT 0,
                         state TEXT DEFAULT 'ACTIVE',
                         filter_mode TEXT DEFAULT 'ALLOW_ALL',

@@ -71,19 +71,6 @@ public class RSAuger
 
         );
 
-        /*  Radius */
-        RSRadiusListener radiusListener =
-                new RSRadiusListener(
-                        conversionListener
-                );
-
-        getServer()
-                .getPluginManager()
-                .registerEvents(
-                        radiusListener,
-                        this
-                );
-
         /*  Admin */
         RSAdminListener adminListener =
                 new RSAdminListener(

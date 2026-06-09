@@ -82,42 +82,10 @@ public class RSMenuListener
                         false
                 );
 
-                MachineManager.setRadius(
-                        block,
-
-                        (int) ConfigManager.get().getDouble(
-                                "default-radius"
-                        )
-                );
-
                 MachineManager.setFilterMode(
                         block,
                         RSKeys.FILTER_ALLOW_ALL
                 );
-
-/*
-|--------------------------------------------------------------------------
-| ENTITY DISPLAY NAME
-|--------------------------------------------------------------------------
-|
-| Intentionally disabled.
-|
-| Some future entity-based plugins (villager systems, escorts,
-| traders, guards, etc.) may want visible custom names.
-|
-*/
-
-/*
-                entity.customName(
-                        net.kyori.adventure.text.Component.text(
-                                RSConstants.ENTITY_DISPLAY_NAME
-                        )
-                );
-
-                entity.setCustomNameVisible(true);
-*/
-
-
 
                 RSMessageUtils.success(
                         player,
@@ -211,26 +179,9 @@ public class RSMenuListener
 
             /*
             |--------------------------------------------------------------------------
-            | RADIUS MENU
+            | FILTER
             |--------------------------------------------------------------------------
             */
-
-            if (event.getRawSlot() == 11) {
-
-                RSRadiusMenu.open(
-                        player,
-                        block
-                );
-
-                return;
-
-            }
-
-/*
-|--------------------------------------------------------------------------
-| FILTER
-|--------------------------------------------------------------------------
-*/
 
             if (event.getRawSlot() == 15) {
 
