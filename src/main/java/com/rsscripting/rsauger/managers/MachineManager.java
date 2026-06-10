@@ -1,6 +1,8 @@
 package com.rsscripting.rsauger.managers;
 
 import com.rsscripting.rsauger.database.DatabaseManager;
+import com.rsscripting.rsauger.machine.AugerEndpoints;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +19,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+
 
 import com.rsscripting.rsauger.machine.MachineState;
 import com.rsscripting.rsauger.machine.MachineError;
@@ -129,6 +134,110 @@ public class MachineManager {
             statement.setInt(
                     4,
                     block.getZ()
+            );
+
+            statement.executeUpdate();
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+    public static void setEndpoints(
+            Block machine,
+            Block source,
+            Block destination
+    ) {
+
+        try (
+
+                Connection connection =
+                        DatabaseManager.getConnection();
+
+                PreparedStatement statement =
+                        connection.prepareStatement(
+                                """
+                                UPDATE machines
+                                SET source_world = ?,
+                                    source_x = ?,
+                                    source_y = ?,
+                                    source_z = ?,
+                                    destination_world = ?,
+                                    destination_x = ?,
+                                    destination_y = ?,
+                                    destination_z = ?
+                                WHERE world = ?
+                                AND x = ?
+                                AND y = ?
+                                AND z = ?
+                                """
+                        )
+
+        ) {
+
+            statement.setString(
+                    1,
+                    source.getWorld().getName()
+            );
+
+            statement.setInt(
+                    2,
+                    source.getX()
+            );
+
+            statement.setInt(
+                    3,
+                    source.getY()
+            );
+
+            statement.setInt(
+                    4,
+                    source.getZ()
+            );
+
+            statement.setString(
+                    5,
+                    destination.getWorld().getName()
+            );
+
+            statement.setInt(
+                    6,
+                    destination.getX()
+            );
+
+            statement.setInt(
+                    7,
+                    destination.getY()
+            );
+
+            statement.setInt(
+                    8,
+                    destination.getZ()
+            );
+
+            statement.setString(
+                    9,
+                    machine.getWorld().getName()
+            );
+
+            statement.setInt(
+                    10,
+                    machine.getX()
+            );
+
+            statement.setInt(
+                    11,
+                    machine.getY()
+            );
+
+            statement.setInt(
+                    12,
+                    machine.getZ()
             );
 
             statement.executeUpdate();
@@ -382,6 +491,265 @@ public class MachineManager {
         }
 
     }
+
+    /*
+    |  Set End points
+     */
+
+    public static void setEndpoints(
+            Block machine,
+            AugerEndpoints endpoints
+    ) {
+
+        try (
+
+                Connection connection =
+                        DatabaseManager.getConnection();
+
+                PreparedStatement statement =
+                        connection.prepareStatement(
+                                """
+                                UPDATE machines
+                                SET source_world = ?,
+                                    source_x = ?,
+                                    source_y = ?,
+                                    source_z = ?,
+                                    destination_world = ?,
+                                    destination_x = ?,
+                                    destination_y = ?,
+                                    destination_z = ?
+                                WHERE world = ?
+                                AND x = ?
+                                AND y = ?
+                                AND z = ?
+                                """
+                        )
+
+        ) {
+
+            Block source =
+                    endpoints.getSource();
+
+            Block destination =
+                    endpoints.getDestination();
+
+            statement.setString(
+                    1,
+                    source.getWorld().getName()
+            );
+
+            statement.setInt(
+                    2,
+                    source.getX()
+            );
+
+            statement.setInt(
+                    3,
+                    source.getY()
+            );
+
+            statement.setInt(
+                    4,
+                    source.getZ()
+            );
+
+            statement.setString(
+                    5,
+                    destination.getWorld().getName()
+            );
+
+            statement.setInt(
+                    6,
+                    destination.getX()
+            );
+
+            statement.setInt(
+                    7,
+                    destination.getY()
+            );
+
+            statement.setInt(
+                    8,
+                    destination.getZ()
+            );
+
+            statement.setString(
+                    9,
+                    machine.getWorld().getName()
+            );
+
+            statement.setInt(
+                    10,
+                    machine.getX()
+            );
+
+            statement.setInt(
+                    11,
+                    machine.getY()
+            );
+
+            statement.setInt(
+                    12,
+                    machine.getZ()
+            );
+
+            statement.executeUpdate();
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+    /*
+    |  Get Endpoints from database
+    */
+
+    public static AugerEndpoints getEndpoints(
+            Block machine
+    ) {
+
+        try (
+
+                Connection connection =
+                        DatabaseManager.getConnection();
+
+                PreparedStatement statement =
+                        connection.prepareStatement(
+                                """
+                                SELECT
+                                    source_world,
+                                    source_x,
+                                    source_y,
+                                    source_z,
+                                    destination_world,
+                                    destination_x,
+                                    destination_y,
+                                    destination_z
+                                FROM machines
+                                WHERE world = ?
+                                AND x = ?
+                                AND y = ?
+                                AND z = ?
+                                LIMIT 1
+                                """
+                        )
+
+        ) {
+
+            statement.setString(
+                    1,
+                    machine.getWorld().getName()
+            );
+
+            statement.setInt(
+                    2,
+                    machine.getX()
+            );
+
+            statement.setInt(
+                    3,
+                    machine.getY()
+            );
+
+            statement.setInt(
+                    4,
+                    machine.getZ()
+            );
+
+            ResultSet result =
+                    statement.executeQuery();
+
+            if (!result.next()) {
+
+                return null;
+
+            }
+
+            String sourceWorld =
+                    result.getString(
+                            "source_world"
+                    );
+
+            String destinationWorld =
+                    result.getString(
+                            "destination_world"
+                    );
+
+            if (sourceWorld == null
+                    || destinationWorld == null) {
+
+                return null;
+
+            }
+
+            World sourceBukkitWorld =
+                    Bukkit.getWorld(
+                            sourceWorld
+                    );
+
+            World destinationBukkitWorld =
+                    Bukkit.getWorld(
+                            destinationWorld
+                    );
+
+            if (sourceBukkitWorld == null
+                    || destinationBukkitWorld == null) {
+
+                return null;
+
+            }
+
+            Block source =
+                    sourceBukkitWorld.getBlockAt(
+                            result.getInt(
+                                    "source_x"
+                            ),
+                            result.getInt(
+                                    "source_y"
+                            ),
+                            result.getInt(
+                                    "source_z"
+                            )
+                    );
+
+            Block destination =
+                    destinationBukkitWorld.getBlockAt(
+                            result.getInt(
+                                    "destination_x"
+                            ),
+                            result.getInt(
+                                    "destination_y"
+                            ),
+                            result.getInt(
+                                    "destination_z"
+                            )
+                    );
+
+            return new AugerEndpoints(
+                    source,
+                    destination
+            );
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+        return null;
+
+    }
+
+    /*
+    |  Set machine to "Paused"
+    */
 
     public static void setPaused(
             Block block,
@@ -973,11 +1341,6 @@ public class MachineManager {
 
     }
 
-
-
-
-
-
     public static Map<Integer, ItemStack> getAllFilterItems(
             Block block
     ) {
@@ -1401,6 +1764,76 @@ public class MachineManager {
         }
 
         return MachineError.NONE;
+
+    }
+
+    public static java.util.List<Block> getAllMachines() {
+
+        java.util.List<Block> machines =
+                new java.util.ArrayList<>();
+
+        try (
+
+                Connection connection =
+                        DatabaseManager.getConnection();
+
+                PreparedStatement statement =
+                        connection.prepareStatement(
+                                """
+                                SELECT
+                                    world,
+                                    x,
+                                    y,
+                                    z
+                                FROM machines
+                                """
+                        )
+
+        ) {
+
+            ResultSet result =
+                    statement.executeQuery();
+
+            while (result.next()) {
+
+                World world =
+                        Bukkit.getWorld(
+                                result.getString(
+                                        "world"
+                                )
+                        );
+
+                if (world == null) {
+
+                    continue;
+
+                }
+
+                machines.add(
+                        world.getBlockAt(
+                                result.getInt(
+                                        "x"
+                                ),
+                                result.getInt(
+                                        "y"
+                                ),
+                                result.getInt(
+                                        "z"
+                                )
+                        )
+                );
+
+            }
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+        return machines;
 
     }
 

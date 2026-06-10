@@ -12,6 +12,8 @@ public enum MachineError {
 
     INVALID_SOURCE,
 
-    INVALID_CONFIGURATION
+    INVALID_CONFIGURATION,
+
+    SHAFT_BROKEN
 
 }

@@ -1,11 +1,14 @@
 package com.rsscripting.rsauger.listeners;
 
 import com.rsscripting.rsauger.config.ConfigManager;
+import com.rsscripting.rsauger.machine.AugerEndpoints;
 import com.rsscripting.rsauger.managers.MachineManager;
 import com.rsscripting.rsauger.gui.*;
 import com.rsscripting.rsauger.utils.RSConstants;
 import com.rsscripting.rsauger.utils.RSKeys;
 import com.rsscripting.rsauger.utils.RSMessageUtils;
+import com.rsscripting.rsauger.machine.AugerValidator;
+import com.rsscripting.rsauger.machine.AugerValidationResult;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -68,8 +71,40 @@ public class RSMenuListener
 
                 }
 
+                AugerValidationResult result =
+                        AugerValidator.validate(
+                                block
+                        );
+
+                if (!result.isValid()) {
+
+                    for (String message :
+                            result.getMessages()) {
+
+                        RSMessageUtils.error(
+                                player,
+                                message
+                        );
+
+                    }
+
+                    player.closeInventory();
+
+                    return;
+
+                }
+
                 MachineManager.insertMachine(
                         block
+                );
+
+                AugerEndpoints endpoints =
+                        result.getEndpoints();
+
+                MachineManager.setEndpoints(
+                        block,
+                        endpoints.getSource(),
+                        endpoints.getDestination()
                 );
 
                 MachineManager.setOwner(

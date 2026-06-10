@@ -5,6 +5,7 @@ import com.rsscripting.rsauger.commands.RSTabCompleter;
 import com.rsscripting.rsauger.config.ConfigManager;
 import com.rsscripting.rsauger.database.DatabaseManager;
 import com.rsscripting.rsauger.listeners.*;
+import com.rsscripting.rsauger.tasks.AugerTask;
 import com.rsscripting.rsauger.utils.GitHubUpdateChecker;
 import com.rsscripting.rsauger.utils.RSConstants;
 import org.bukkit.command.PluginCommand;
@@ -144,6 +145,12 @@ public class RSAuger
         getLogger().info(
                 RSConstants.PLUGIN_NAME
                         + " Enabled"
+        );
+
+        new AugerTask().runTaskTimer(
+                this,
+                40L,
+                40L
         );
 
     }

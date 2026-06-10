@@ -3,6 +3,7 @@ package com.rsscripting.rsauger.gui;
 import com.rsscripting.rsauger.utils.RSConstants;
 import com.rsscripting.rsauger.utils.RSMenuUtils;
 import com.rsscripting.rsauger.managers.MachineManager;
+import com.rsscripting.rsauger.utils.RSMessageUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -90,6 +91,30 @@ public class RSMainMenu {
 
                 )
         );
+
+        /*
+        |--------------------------------------------------------------------------
+        | RECALIBRATE
+        |--------------------------------------------------------------------------
+        */
+
+                menu.setItem(
+                        11,
+                        RSMenuUtils.createMenuItem(
+
+                                Material.LIGHTNING_ROD,
+
+                                "§bRecalibrate",
+
+                                List.of(
+                                        "§7Rescan the lightning rod shaft.",
+                                        "§7",
+                                        "§7Rediscover the source and",
+                                        "§7destination containers."
+                                )
+
+                        )
+                );
 
         /*
         |--------------------------------------------------------------------------
