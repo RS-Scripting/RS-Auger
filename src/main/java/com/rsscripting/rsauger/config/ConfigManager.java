@@ -1,11 +1,9 @@
 package com.rsscripting.rsauger.config;
 
 import com.rsscripting.rsauger.RSAuger;
-import org.bukkit.configuration.file.FileConfiguration;
 
 public class ConfigManager {
 
-    private static FileConfiguration config;
 
     /*
     |--------------------------------------------------------------------------
@@ -17,10 +15,6 @@ public class ConfigManager {
 
         RSAuger.getInstance()
                 .saveDefaultConfig();
-
-        config =
-                RSAuger.getInstance()
-                        .getConfig();
 
     }
 
@@ -34,22 +28,6 @@ public class ConfigManager {
 
         RSAuger.getInstance()
                 .reloadConfig();
-
-        config =
-                RSAuger.getInstance()
-                        .getConfig();
-
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | GET CONFIG
-    |--------------------------------------------------------------------------
-    */
-
-    public static FileConfiguration get() {
-
-        return config;
 
     }
 

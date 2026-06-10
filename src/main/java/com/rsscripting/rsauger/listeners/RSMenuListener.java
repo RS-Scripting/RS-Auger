@@ -1,7 +1,7 @@
 package com.rsscripting.rsauger.listeners;
 
-import com.rsscripting.rsauger.config.ConfigManager;
 import com.rsscripting.rsauger.machine.AugerEndpoints;
+import com.rsscripting.rsauger.machine.MachineError;
 import com.rsscripting.rsauger.managers.MachineManager;
 import com.rsscripting.rsauger.gui.*;
 import com.rsscripting.rsauger.utils.RSConstants;
@@ -193,15 +193,64 @@ public class RSMenuListener
 
             if (event.getRawSlot() == 6) {
 
-                boolean paused =
-                        MachineManager.isPaused(
+                if (
+
+                        MachineManager.getMachineError(
+                                block
+                        ) != MachineError.NONE
+
+                ) {
+
+                    AugerValidationResult result =
+                            AugerValidator.validate(
+                                    block
+                            );
+
+                    if (!result.isValid()) {
+
+                        RSMessageUtils.error(
+                                player,
+                                "Cannot restart machine until the error is repaired."
+                        );
+
+                        RSMainMenu.open(
+                                player,
                                 block
                         );
 
-                MachineManager.setPaused(
-                        block,
-                        !paused
-                );
+                        return;
+
+                    }
+
+                    MachineManager.setEndpoints(
+                            block,
+                            result.getEndpoints()
+                    );
+
+                    MachineManager.clearMachineError(
+                            block
+                    );
+
+                    MachineManager.setPaused(
+                            block,
+                            false
+                    );
+
+                }
+
+                else {
+
+                    boolean paused =
+                            MachineManager.isPaused(
+                                    block
+                            );
+
+                    MachineManager.setPaused(
+                            block,
+                            !paused
+                    );
+
+                }
 
                 RSMainMenu.open(
                         player,
@@ -218,7 +267,7 @@ public class RSMenuListener
             |--------------------------------------------------------------------------
             */
 
-            if (event.getRawSlot() == 15) {
+            if (event.getRawSlot() == 13) {
 
                 RSFilterMenu.open(
                         player,

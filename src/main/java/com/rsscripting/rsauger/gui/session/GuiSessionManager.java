@@ -17,17 +17,7 @@ public class GuiSessionManager {
 
         return sessions.computeIfAbsent(
                 player.getUniqueId(),
-                GuiSession::new
-        );
-
-    }
-
-    public static void removeSession(
-            Player player
-    ) {
-
-        sessions.remove(
-                player.getUniqueId()
+                uuid -> new GuiSession()
         );
 
     }

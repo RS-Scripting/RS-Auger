@@ -28,18 +28,9 @@ public class AugerValidator {
             Block machine
     ) {
 
-        BlockFace sourceDirection =
-                getSourceDirection(
-                        machine
-                );
-
-        if (sourceDirection == null) {
-
-            return null;
-
-        }
-
-        return sourceDirection;
+        return getSourceDirection(
+                machine
+        );
 
     }
 
@@ -118,6 +109,21 @@ public class AugerValidator {
                 getDestinationDirection(
                         machine
                 );
+
+        if (destinationDirection == null) {
+
+            messages.add(
+                    "Could not determine destination direction."
+            );
+
+            return new AugerValidationResult(
+                    false,
+                    null,
+                    messages,
+                    MachineError.INVALID_CONFIGURATION
+            );
+
+        }
 
         Block current =
                 machine.getRelative(

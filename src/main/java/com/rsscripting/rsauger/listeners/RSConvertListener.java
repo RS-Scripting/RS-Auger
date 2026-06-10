@@ -8,7 +8,6 @@ import com.rsscripting.rsauger.gui.session.GuiSession;
 import com.rsscripting.rsauger.gui.session.GuiSessionManager;
 
 import com.rsscripting.rsauger.utils.RSMessageUtils;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

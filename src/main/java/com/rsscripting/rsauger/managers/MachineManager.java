@@ -2,23 +2,20 @@ package com.rsscripting.rsauger.managers;
 
 import com.rsscripting.rsauger.database.DatabaseManager;
 import com.rsscripting.rsauger.machine.AugerEndpoints;
+import com.rsscripting.rsauger.RSAuger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.UUID;
 import java.util.Base64;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.util.io.BukkitObjectInputStream;
+
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -81,7 +78,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
             return false;
 
@@ -142,7 +141,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -246,7 +247,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -336,7 +339,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -403,7 +408,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -484,7 +491,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
             return false;
 
@@ -599,7 +608,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -739,7 +750,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -824,7 +837,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -836,7 +851,7 @@ public class MachineManager {
 
         return getMachineState(
                 block
-        ) == MachineState.PAUSED;
+        ) != MachineState.ACTIVE;
 
     }
 
@@ -895,7 +910,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -960,7 +977,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -1027,7 +1046,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -1090,7 +1111,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -1102,30 +1125,18 @@ public class MachineManager {
 
         try {
 
-            ByteArrayOutputStream outputStream =
-                    new ByteArrayOutputStream();
-
-            BukkitObjectOutputStream dataOutput =
-                    new BukkitObjectOutputStream(
-                            outputStream
-                    );
-
-            dataOutput.writeObject(
-                    itemStack
-            );
-
-            dataOutput.close();
-
             return Base64.getEncoder()
                     .encodeToString(
-                            outputStream.toByteArray()
+                            itemStack.serializeAsBytes()
                     );
 
         }
 
-        catch (IOException e) {
+        catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -1218,7 +1229,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -1230,31 +1243,20 @@ public class MachineManager {
 
         try {
 
-            byte[] data =
+            return ItemStack.deserializeBytes(
                     Base64.getDecoder()
                             .decode(
                                     serializedItem
-                            );
-
-            BukkitObjectInputStream inputStream =
-                    new BukkitObjectInputStream(
-                            new ByteArrayInputStream(
-                                    data
                             )
-                    );
-
-            ItemStack itemStack =
-                    (ItemStack) inputStream.readObject();
-
-            inputStream.close();
-
-            return itemStack;
+            );
 
         }
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -1333,7 +1335,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -1415,7 +1419,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -1480,7 +1486,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -1543,7 +1551,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -1610,7 +1620,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -1682,7 +1694,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -1759,7 +1773,9 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
@@ -1829,11 +1845,27 @@ public class MachineManager {
 
         catch (Exception e) {
 
-            e.printStackTrace();
+            logException(
+                    e
+            );
 
         }
 
         return machines;
+
+    }
+
+    private static void logException(
+            Exception e
+    ) {
+
+        RSAuger.getInstance()
+                .getLogger()
+                .severe(
+                        e.getMessage()
+                );
+
+        e.printStackTrace();
 
     }
 

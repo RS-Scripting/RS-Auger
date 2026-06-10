@@ -108,12 +108,12 @@ public class DatabaseManager {
                         destination_world TEXT,
                         destination_x INTEGER,
                         destination_y INTEGER,
-                        destination_z INTEGER,                       
+                        destination_z INTEGER,
                         machine_type TEXT,
                         paused INTEGER DEFAULT 0,
                         state TEXT DEFAULT 'ACTIVE',
                         filter_mode TEXT DEFAULT 'ALLOW_ALL',
-                        created_at TEXT                                              
+                        created_at TEXT
                     )
                     """
             );
@@ -161,14 +161,12 @@ public class DatabaseManager {
 
             ensureColumnExists(
                     connection,
-                    "machines",
                     "state",
                     "TEXT DEFAULT 'ACTIVE'"
             );
 
             ensureColumnExists(
                     connection,
-                    "machines",
                     "error_reason",
                     "TEXT"
             );
@@ -189,7 +187,6 @@ public class DatabaseManager {
 
     private static void ensureColumnExists(
             Connection connection,
-            String table,
             String column,
             String definition
     ) {
@@ -202,7 +199,7 @@ public class DatabaseManager {
                                 .getColumns(
                                         null,
                                         null,
-                                        table,
+                                        "machines",
                                         column
                                 )
 
@@ -211,9 +208,7 @@ public class DatabaseManager {
             if (!columns.next()) {
 
                 connection.createStatement().execute(
-                        "ALTER TABLE "
-                                + table
-                                + " ADD COLUMN "
+                        "ALTER TABLE machines ADD COLUMN "
                                 + column
                                 + " "
                                 + definition

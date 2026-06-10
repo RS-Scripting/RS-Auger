@@ -1,9 +1,9 @@
 package com.rsscripting.rsauger.gui;
 
+import com.rsscripting.rsauger.machine.MachineError;
 import com.rsscripting.rsauger.utils.RSConstants;
 import com.rsscripting.rsauger.utils.RSMenuUtils;
 import com.rsscripting.rsauger.managers.MachineManager;
-import com.rsscripting.rsauger.utils.RSMessageUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -77,44 +77,76 @@ public class RSMainMenu {
                         block
                 );
 
-        menu.setItem(
-                6,
-                RSMenuUtils.createMenuItem(
-
-                        paused
-                                ? Material.RED_DYE
-                                : Material.GREEN_DYE,
-
-                        paused
-                                ? "§cPaused"
-                                : "§aRunning"
-
-                )
-        );
-
-        /*
-        |--------------------------------------------------------------------------
-        | RECALIBRATE
-        |--------------------------------------------------------------------------
-        */
-
-                menu.setItem(
-                        11,
-                        RSMenuUtils.createMenuItem(
-
-                                Material.LIGHTNING_ROD,
-
-                                "§bRecalibrate",
-
-                                List.of(
-                                        "§7Rescan the lightning rod shaft.",
-                                        "§7",
-                                        "§7Rediscover the source and",
-                                        "§7destination containers."
-                                )
-
-                        )
+        MachineError error =
+                MachineManager.getMachineError(
+                        block
                 );
+
+        if (error != MachineError.NONE) {
+
+            String errorMessage =
+                    switch (error) {
+
+                        case MISSING_TARGET ->
+                                "§7Missing target container.";
+
+                        case MISSING_SOURCE ->
+                                "§7Missing source container.";
+
+                        case INVALID_TARGET ->
+                                "§7Target container is invalid.";
+
+                        case INVALID_SOURCE ->
+                                "§7Source container is invalid.";
+
+                        case INVALID_CONFIGURATION ->
+                                "§7Machine configuration is invalid.";
+
+                        case SHAFT_BROKEN ->
+                                "§7Lightning rod shaft is broken.";
+
+                        default ->
+                                "§7Unknown error.";
+
+                    };
+
+            menu.setItem(
+                    6,
+                    RSMenuUtils.createMenuItem(
+
+                            Material.RED_DYE,
+
+                            "§cError",
+
+                            List.of(
+                                    errorMessage,
+                                    "§7",
+                                    "§7Machine is paused.",
+                                    "§7Repair and recalibrate."
+                            )
+
+                    )
+            );
+
+        }
+        else {
+
+            menu.setItem(
+                    6,
+                    RSMenuUtils.createMenuItem(
+
+                            paused
+                                    ? Material.RED_DYE
+                                    : Material.GREEN_DYE,
+
+                            paused
+                                    ? "§cPaused"
+                                    : "§aRunning"
+
+                    )
+            );
+
+        }
 
         /*
         |--------------------------------------------------------------------------
@@ -123,7 +155,7 @@ public class RSMainMenu {
         */
 
         menu.setItem(
-                15,
+                13,
                 RSMenuUtils.createMenuItem(
 
                         Material.HOPPER,

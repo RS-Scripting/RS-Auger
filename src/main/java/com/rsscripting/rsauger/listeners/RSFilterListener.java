@@ -17,11 +17,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class RSFilterListener
         implements Listener {
-
-
-
-
-
     private final RSConvertListener
             conversionListener;
 

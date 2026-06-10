@@ -61,33 +61,6 @@ public class RSMessageUtils {
 
     /*
     |--------------------------------------------------------------------------
-    | WARNING
-    |--------------------------------------------------------------------------
-    */
-
-    public static void warning(
-            Player player,
-            String message
-    ) {
-
-        player.sendMessage(
-
-                PREFIX.append(
-
-                        Component.text(
-                                message
-                        ).color(
-                                NamedTextColor.YELLOW
-                        )
-
-                )
-
-        );
-
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | ERROR
     |--------------------------------------------------------------------------
     */
@@ -132,33 +105,6 @@ public class RSMessageUtils {
                                 message
                         ).color(
                                 NamedTextColor.AQUA
-                        )
-
-                )
-
-        );
-
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | ADMIN
-    |--------------------------------------------------------------------------
-    */
-
-    public static void admin(
-            Player player,
-            String message
-    ) {
-
-        player.sendMessage(
-
-                PREFIX.append(
-
-                        Component.text(
-                                message
-                        ).color(
-                                NamedTextColor.GOLD
                         )
 
                 )
