@@ -1,4 +1,3 @@
-````markdown
 <div align="center">
 
 # RS-Auger
@@ -236,4 +235,3 @@ See the LICENSE file for details.
 <p align="center">
   Generate • Collect • Transport • Store
 </p>
-```
