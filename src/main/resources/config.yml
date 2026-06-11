@@ -2,8 +2,10 @@
 # ----------------------------------------
 # RS Plugin Template Configuration
 # ----------------------------------------
-#
 
-debug-mode: false
+# Maximum lightning rod segments allowed for an Auger.
+# Values above 16 are ignored.
+# Allowed Range: 1-16
+# Default: 16
+max-machine-length: 16
 
-admin-bypass: true

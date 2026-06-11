@@ -1,5 +1,6 @@
 package com.rsscripting.rsauger.machine;
 
+import com.rsscripting.rsauger.config.ConfigManager;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -132,7 +133,7 @@ public class AugerValidator {
 
         int length = 0;
 
-        while (length < 10) {
+        while (length < ConfigManager.getMaxMachineLength()) {
 
             Material type =
                     current.getType();
