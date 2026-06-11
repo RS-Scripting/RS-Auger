@@ -1,5 +1,5 @@
 name: RS-Auger
-version: 1.0.0
+version: ${project.version}
 main: com.rsscripting.rsauger.RSAuger
 api-version: '1.21'
 

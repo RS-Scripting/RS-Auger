@@ -1,6 +1,8 @@
 package com.rsscripting.rsauger.utils;
 
 import com.rsscripting.rsauger.RSAuger;
+import com.rsscripting.rsauger.utils.RSConstants;
+import com.rsscripting.rsauger.utils.VersionUtils;
 import org.bukkit.Bukkit;
 
 import java.io.BufferedReader;
@@ -38,11 +40,11 @@ public class GitHubUpdateChecker {
                     try {
 
                         String apiURL =
-                                "https://api.github.com/repos/"
+                                "https://raw.githubusercontent.com/"
                                         + RSConstants.GITHUB_USER
                                         + "/"
                                         + RSConstants.GITHUB_REPOSITORY
-                                        + "/releases/latest";
+                                        + "/master/pom.xml";
 
                         HttpURLConnection connection =
                                 (HttpURLConnection)
@@ -72,12 +74,13 @@ public class GitHubUpdateChecker {
 
                         reader.close();
 
-                        String json =
+                        String pom =
                                 response.toString();
 
                         latestVersion =
-                                json.split("\"tag_name\":\"")[1]
-                                        .split("\"")[0];
+                                pom.split("<version>")[1]
+                                        .split("</version>")[0]
+                                        .trim();
 
                         String currentVersion =
                                 VersionUtils.getVersion();
@@ -88,9 +91,18 @@ public class GitHubUpdateChecker {
                         |--------------------------------------------------------------------------
                         */
 
-                        if (!latestVersion.equalsIgnoreCase(
-                                currentVersion
-                        )) {
+                        if (latestVersion == null) {
+
+                            updateStatus =
+                                    "Unable To Check";
+
+                        }
+                        else if (
+                                compareVersions(
+                                        latestVersion,
+                                        currentVersion
+                                ) > 0
+                        ) {
 
                             updateStatus =
                                     "Update Available";
@@ -122,7 +134,7 @@ public class GitHubUpdateChecker {
                             Bukkit.getConsoleSender().sendMessage(
 
                                     RSConstants.PREFIX
-                                            + "Plugin is up to date."
+                                            + "RS-Auger is up to date."
 
                             );
 
@@ -132,13 +144,15 @@ public class GitHubUpdateChecker {
 
                     catch (Exception exception) {
 
+                        latestVersion = null;
+
                         updateStatus =
                                 "Unable To Check";
 
                         Bukkit.getConsoleSender().sendMessage(
 
                                 RSConstants.PREFIX
-                                        + "Failed to check for updates."
+                                        + "Unable to check for updates."
 
                         );
 
@@ -171,6 +185,59 @@ public class GitHubUpdateChecker {
     public static String getUpdateStatus() {
 
         return updateStatus;
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | VERSION COMPARISON
+    |--------------------------------------------------------------------------
+    */
+
+    private static int compareVersions(
+            String version1,
+            String version2
+    ) {
+
+        String[] v1 =
+                version1.split("\\.");
+
+        String[] v2 =
+                version2.split("\\.");
+
+        int length =
+                Math.max(
+                        v1.length,
+                        v2.length
+                );
+
+        for (int i = 0; i < length; i++) {
+
+            int num1 =
+                    i < v1.length
+                            ? Integer.parseInt(v1[i])
+                            : 0;
+
+            int num2 =
+                    i < v2.length
+                            ? Integer.parseInt(v2[i])
+                            : 0;
+
+            if (num1 < num2) {
+
+                return -1;
+
+            }
+
+            if (num1 > num2) {
+
+                return 1;
+
+            }
+
+        }
+
+        return 0;
 
     }
 
