@@ -14,7 +14,7 @@ public class RSConstants {
             "RS-Auger";
 
     public static final String PREFIX =
-            "§7[§cRS-RSAuger§7] §r";
+            "§7[§cRS-Auger§7] §r";
 
     public static final String COMMAND_ALIAS =
             "rsauger";
