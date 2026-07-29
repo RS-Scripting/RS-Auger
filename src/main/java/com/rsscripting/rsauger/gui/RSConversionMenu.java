@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class RSConversionMenu {
 
-    public static final String MENU_TITLE = "Activate Item Magnet";
+    public static final String MENU_TITLE = "Activate Auger";
 
     public static void open(
             Player player
